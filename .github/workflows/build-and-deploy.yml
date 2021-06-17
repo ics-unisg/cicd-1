@@ -21,8 +21,18 @@ jobs:
       with:
         java-version: '11'
         distribution: 'adopt'
+
+    
+    - run: mkdir ./target
+
     - name: Build with Maven
-      run: mvn --batch-mode --update-snapshots verify
+      run: mvn -f app/pom.xml --batch-mode --update-snapshots verify
+    - run: cp ./app/target/app-0.1.0.jar ./target  
+
+    - name: Build with Maven
+      run: mvn -f app2/pom.xml --batch-mode --update-snapshots verify
+    - run: cp ./app2/target/app2-0.1.0.jar ./target  
+
     - run: cp docker-compose.yml ./target  
     - name: Archive artifacts
       uses: actions/upload-artifact@v1
