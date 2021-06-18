@@ -41,3 +41,18 @@ services:
       - "traefik.http.routers.app.tls=true"
       - "traefik.http.routers.app.entryPoints=web,websecure"
       - "traefik.http.routers.app.tls.certresolver=le"
+
+  app2:
+    image: openjdk
+    command: "java -jar /data/app2-0.1.0.jar"
+    restart: unless-stopped
+    volumes:
+      - ./:/data/
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.app2.rule=Host(`app2.${PUB_IP}.nip.io`)"
+      - "traefik.http.routers.app2.service=app2"
+      - "traefik.http.services.app2.loadbalancer.server.port=8080"
+      - "traefik.http.routers.app2.tls=true"
+      - "traefik.http.routers.app2.entryPoints=web,websecure"
+      - "traefik.http.routers.app2.tls.certresolver=le"
